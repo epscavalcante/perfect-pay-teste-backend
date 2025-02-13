@@ -1,0 +1,11 @@
+services:
+  app:
+    build:
+      context: ./php
+    container_name: app
+    volumes:
+      - ../:/var/www
+    ports:
+      - "8100:8000"
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
