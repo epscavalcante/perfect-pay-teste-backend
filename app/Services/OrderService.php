@@ -49,4 +49,30 @@ class OrderService
 
         return $order->id;
     }
+
+    public function getOrderDetail(int $orderId): array
+    {
+        $order = Order::with(['items', 'customer'])->findOrFail($orderId);
+
+        $orderData = [
+            'id' => $order->id,
+            'status' => $order->status,
+            'total' => $order->total,
+            'customer' => [
+                'name' => $order->customer->name,
+                'email' => $order->customer->email,
+                'documentNumber' => $order->customer->document_number,
+            ],
+            'items' => array_map(function ($item) {
+                return [
+                    'name' => $item['name'],
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                    'total' => $item['total']
+                ];
+            }, $order->items->all()),
+        ];
+
+        return $orderData;
+    }
 }
