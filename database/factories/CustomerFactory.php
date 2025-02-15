@@ -25,7 +25,7 @@ class CustomerFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->email(),
-            'document_number' => $faker->cpf(false)
+            'document_number' => $faker->cpf(false),
         ];
     }
 }

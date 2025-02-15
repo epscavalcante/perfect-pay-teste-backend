@@ -8,9 +8,6 @@ use App\Models\Product;
 
 class OrderService
 {
-    /**
-     * @return int
-     */
     public function placeOrder(array $orderData): int
     {
         $customer = Customer::create([
@@ -22,12 +19,13 @@ class OrderService
         $orderItemsData = array_map(
             callback: function ($item) {
                 $product = Product::findOrFail($item['product_id']);
+
                 return [
                     'product_id' => $product->id,
                     'name' => $product->name,
                     'price' => $product->price,
                     'quantity' => $item['quantity'],
-                    'total' => $product->price * $item['quantity']
+                    'total' => $product->price * $item['quantity'],
                 ];
             },
             array: $orderData['items']
@@ -42,7 +40,7 @@ class OrderService
         $order = Order::create([
             'customer_id' => $customer->id,
             'status' => 'created',
-            'total' => $total
+            'total' => $total,
         ]);
 
         $order->items()->createMany($orderItemsData);
@@ -52,7 +50,7 @@ class OrderService
 
     public function getOrderDetail(int $orderId): array
     {
-        $order = Order::with(['items', 'customer'])->findOrFail($orderId);
+        $order = Order::with(['items', 'customer', 'lastPayment'])->findOrFail($orderId);
 
         $orderData = [
             'id' => $order->id,
@@ -68,10 +66,38 @@ class OrderService
                     'name' => $item['name'],
                     'price' => $item['price'],
                     'quantity' => $item['quantity'],
-                    'total' => $item['total']
+                    'total' => $item['total'],
                 ];
             }, $order->items->all()),
         ];
+
+        if ($order->lastPayment) {
+            $lastPayment = [
+                'paymentMethod' => $order->lastPayment->payment_method,
+                'status' => $order->lastPayment->status,
+                'pixQrCode' => null,
+                'pixCopiaCola' => null,
+                'boletoUrl' => null,
+                'cardLastDigits' => null,
+                'cardBrand' => null,
+            ];
+
+            if ($order->lastPayment->isPix()) {
+                $lastPayment['pixQrCode'] = $order->lastPayment->metadata->pix->qr_code;
+                $lastPayment['pixCopiaCola'] = $order->lastPayment->metadata->pix->copia_e_cola;
+            }
+
+            if ($order->lastPayment->isBoleto()) {
+                $lastPayment['boletoUrl'] = $order->lastPayment->metadata->boleto->file_url;
+            }
+
+            if ($order->lastPayment->isCreditCard()) {
+                $lastPayment['cardLastDigits'] = $order->lastPayment->metadata->credit_card->last_digits;
+                $lastPayment['cardBrand'] = $order->lastPayment->metadata->credit_card->brand;
+            }
+
+            $orderData['lastPayment'] = $lastPayment;
+        }
 
         return $orderData;
     }
