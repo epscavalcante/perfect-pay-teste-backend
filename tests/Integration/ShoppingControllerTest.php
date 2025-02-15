@@ -16,5 +16,3 @@ describe('ShoppingController Integration Tests', function () {
             ]);
     });
 });
-
-
