@@ -13,14 +13,14 @@ describe('OrderService Integration Tests', function () {
             'customer' => [
                 'name' => 'Customer test',
                 'email' => 'customer.test@email.com',
-                'document_number' => '14186818061'
+                'document_number' => '14186818061',
             ],
             'items' => [
                 [
                     'product_id' => $product->id,
-                    'quantity' => 1
-                ]
-            ]
+                    'quantity' => 1,
+                ],
+            ],
         ];
         $orderId = $orderService->placeOrder($orderData);
         expect($orderId)->toBeInt();
@@ -29,7 +29,7 @@ describe('OrderService Integration Tests', function () {
     test('Get order detail', function () {
         $product = Product::factory()->create([
             'name' => 'Product Test',
-            'price' => 150
+            'price' => 150,
         ]);
         $customer = Customer::factory()->create();
         $order = Order::create([
@@ -42,7 +42,7 @@ describe('OrderService Integration Tests', function () {
             'name' => $product->name,
             'price' => $product->price,
             'quantity' => 2,
-            'total' => 300
+            'total' => 300,
         ]);
         $orderService = new OrderService();
         $orderDetail = $orderService->getOrderDetail($order->id);
@@ -53,7 +53,7 @@ describe('OrderService Integration Tests', function () {
             'customer' => [
                 'name' => $customer->name,
                 'email' => $customer->email,
-                'documentNumber' => $customer->document_number
+                'documentNumber' => $customer->document_number,
             ],
             'items' => [
                 [
@@ -61,7 +61,7 @@ describe('OrderService Integration Tests', function () {
                     'price' => $product->price,
                     'quantity' => 2,
                     'total' => 300,
-                ]
+                ],
             ],
         ]);
     });

@@ -16,7 +16,7 @@ describe('ShoppingController Integration Tests', function () {
         expect($showCart)->toBeInstanceOf(View::class);
         expect($showCart->getData())
             ->toMatchArray([
-                'products' => []
+                'products' => [],
             ]);
     });
 
@@ -27,7 +27,7 @@ describe('ShoppingController Integration Tests', function () {
         $order = Order::create([
             'total' => 165,
             'customer_id' => $customer->id,
-            'status' => 'created'
+            'status' => 'created',
         ]);
 
         $order->items()->createMany([
@@ -36,15 +36,15 @@ describe('ShoppingController Integration Tests', function () {
                 'name' => $product1->name,
                 'price' => $product1->price,
                 'quantity' => 1,
-                'total' => 45
+                'total' => 45,
             ],
             [
                 'product_id' => $product2->id,
                 'name' => $product2->name,
                 'price' => $product2->price,
                 'quantity' => 2,
-                'total' => 120
-            ]
+                'total' => 120,
+            ],
         ]);
 
         $orderService = new OrderService();
@@ -53,30 +53,30 @@ describe('ShoppingController Integration Tests', function () {
         expect($showCart)->toBeInstanceOf(View::class);
         expect($showCart->getData())
             ->toMatchArray([
-                "order" => [
-                    "id" => $order->id,
-                    "status" => $order->status,
-                    "total" => $order->total,
-                    "customer" => [
-                        "name" => $customer->name,
-                        "email" => $customer->email,
-                        "documentNumber" => $customer->document_number,
+                'order' => [
+                    'id' => $order->id,
+                    'status' => $order->status,
+                    'total' => $order->total,
+                    'customer' => [
+                        'name' => $customer->name,
+                        'email' => $customer->email,
+                        'documentNumber' => $customer->document_number,
                     ],
-                    "items" => [
+                    'items' => [
                         [
-                            "name" => $product1->name,
-                            "price" => $product1->price,
-                            "quantity" => 1,
-                            "total" => $product1->price * 1,
+                            'name' => $product1->name,
+                            'price' => $product1->price,
+                            'quantity' => 1,
+                            'total' => $product1->price * 1,
                         ],
                         [
-                            "name" => $product2->name,
-                            "price" => $product2->price,
-                            "quantity" => 2,
-                            "total" => $product2->price * 2,
-                        ]
-                    ]
-                ]
+                            'name' => $product2->name,
+                            'price' => $product2->price,
+                            'quantity' => 2,
+                            'total' => $product2->price * 2,
+                        ],
+                    ],
+                ],
             ]);
     });
 });
