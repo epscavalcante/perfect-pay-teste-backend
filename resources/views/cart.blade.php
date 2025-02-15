@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form action="#" method="POST">
+<form action="{{route('placeOrder')}}" method="POST">
     @csrf
 
     <div class="card mb-3">

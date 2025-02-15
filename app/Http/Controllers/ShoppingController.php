@@ -39,4 +39,11 @@ class ShoppingController extends Controller
 
         return to_route('orderDetail', $orderId);
     }
+
+    public function orderDetail(int $orderId, OrderService $orderService)
+    {
+        $orderDetail = $orderService->getOrderDetail($orderId);
+
+        return view('order-detail')->with(['order' => $orderDetail]);
+    }
 }
