@@ -31,6 +31,19 @@
                 </ul>
             </div>
         @endif
+
+        @session('success')
+        <div class="alert alert-success fade show" role="alert">
+            {{ $value }}
+        </div>
+        @endsession
+
+        @session('error')
+        <div class="alert alert-danger fade show" role="alert">
+            {{ $value }}
+        </div>
+        @endsession
+
         @yield('content')
     </main>
 </div>
