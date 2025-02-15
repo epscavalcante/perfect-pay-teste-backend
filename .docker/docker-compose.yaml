@@ -5,7 +5,36 @@ services:
     container_name: app
     volumes:
       - ../:/var/www
-    ports:
-      - "8100:8000"
     extra_hosts:
       - "host.docker.internal:172.17.0.1"
+
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    restart: always
+    tty: true
+    volumes:
+      - ..:/var/www
+    ports:
+      - "8100:80"
+    depends_on:
+      - app
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.33
+    environment:
+      - MYSQL_DATABASE=app
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
