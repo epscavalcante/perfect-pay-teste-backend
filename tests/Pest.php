@@ -13,9 +13,9 @@
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-uses(Tests\TestCase::class)->in('Unit', 'Integration', 'Feature');
-uses(Tests\CreatesApplication::class)->in('Integration', 'Feature');
-uses(DatabaseMigrations::class)->in('Integration', 'Feature');
+uses(Tests\TestCase::class)->in('Unit', 'Integration');
+uses(Tests\CreatesApplication::class)->in('Integration');
+uses(DatabaseMigrations::class)->in('Integration');
 
 /*
 |--------------------------------------------------------------------------
