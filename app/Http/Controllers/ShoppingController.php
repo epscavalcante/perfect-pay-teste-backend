@@ -64,6 +64,8 @@ class ShoppingController extends Controller
                 ->with('error', 'Tivemos um problema ao processar o pagamento, altere o método de pagamento ou tente novamente em alguns instantes.');
         }
 
-        return to_route('orderDetail', $orderId);
+        return to_route('orderDetail', $orderId)->with(
+            'success', 'Obrigado, pelo pedido!'
+        );
     }
 }
