@@ -28,7 +28,7 @@ class PlaceOrderRequest extends FormRequest
             'customer' => 'required|array',
             'customer.name' => 'required|min:3|max:200',
             'customer.email' => 'required|email',
-            'customer.document_number' => 'required|size:11'
+            'customer.document_number' => 'required|size:11',
         ];
     }
 }
